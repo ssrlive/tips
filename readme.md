@@ -24,3 +24,4 @@
 - [關掉 vim 的 paste 自動格式化功能以免粘貼的字符串搞得亂七八糟](tips/0034.md)
 - [端口复用](tips/0035.md)
 - [SwitchyOmega 設定](tips/0036.md)
+- [Bash tips](tips/0037.md)
