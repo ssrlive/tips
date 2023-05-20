@@ -12,7 +12,6 @@
 - [生成二維碼](tips/0013.md)
 - [Git tips](tips/0015.md)
 - [造字軟件 fontforge 幫字型檔補缺字](tips/0016.md)
-- [Linux tips](tips/0017.md)
 - [PostgreSQL tips](tips/0021.md)
 - [iOS 软件截屏尺寸](tips/0023.md)
 - [Internet Download Manager (IDM) 歷史記錄文件](tips/0024.md)
