@@ -1,5 +1,6 @@
 # Programming tips
 
+- [Linux tips](tips/0038.md)
 - [Windows tips](tips/0007.md)
 - [怎么批量提取一个网页里面的链接](tips/0001.md)
 - [Mysql tips](tips/0002.md)
