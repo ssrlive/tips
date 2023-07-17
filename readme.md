@@ -4,7 +4,6 @@
 - [Windows tips](tips/0007.md)
 - [怎么批量提取一个网页里面的链接](tips/0001.md)
 - [Mysql tips](tips/0002.md)
-- [安裝 mysql 到 linux](tips/0003.md)
 - [Android VpnService 使用总结](tips/0004.md)
 - [Rust tips](tips/0005.md)
 - [macOS 命令行下使用 Sublime Text 打开文本文件](tips/0006.md)
