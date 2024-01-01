@@ -26,3 +26,4 @@
 - [端口复用](tips/0035.md)
 - [SwitchyOmega 設定](tips/0036.md)
 - [Bash tips](tips/0037.md)
+- [NAT 穿透技术細節（UDP 打洞）](tips/0039.md)
