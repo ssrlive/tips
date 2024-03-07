@@ -27,3 +27,4 @@
 - [SwitchyOmega 設定](tips/0036.md)
 - [Bash tips](tips/0037.md)
 - [NAT 穿透技术細節（UDP 打洞）](tips/0039.md)
+- [自簽名證書導入](tips/0040.md)
