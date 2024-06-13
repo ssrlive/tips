@@ -14,7 +14,7 @@ function update_system() {
 }
 
 function remove_old_php() {
-    apt-get remove php-xdebug -y
+    apt-get remove apache2 php php-xdebug -y
     apt-get purge php.* -y
     apt-get autoremove -y
 }
