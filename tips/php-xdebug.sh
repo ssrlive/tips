@@ -3,10 +3,12 @@
 # 在 Ubuntu 安裝 PHP 和 xdebug
 
 # 檢查是否有 root 權限
-if [ "$EUID" -ne 0 ]; then
-  echo "Please run as root"
-  exit 1
-fi
+function check_root() {
+    if [ "$EUID" -ne 0 ]; then
+        echo "Please run as root"
+        exit 1
+    fi
+}
 
 function update_system() {
     apt update -y
@@ -41,12 +43,6 @@ EOF
 
     # 重啟 apache2 服務
     systemctl restart apache2
-
-    if check_xdebug; then
-        echo "PHP and xdebug installed successfully."
-    else
-        echo "PHP and xdebug installation failed."
-    fi
 }
 
 function check_xdebug() {
@@ -60,10 +56,21 @@ function check_xdebug() {
     return 0
 }
 
-if check_xdebug; then
-    echo "PHP and xdebug already installed."
-else
-    update_system
-    remove_old_php
-    install_php_n_xdebug
-fi
+function main() {
+    check_root
+    if check_xdebug; then
+        echo "PHP and xdebug already installed."
+    else
+        update_system
+        remove_old_php
+        install_php_n_xdebug
+
+        if check_xdebug; then
+            echo "PHP and xdebug installed successfully."
+        else
+            echo "PHP and xdebug installation failed."
+        fi
+    fi
+}
+
+main
