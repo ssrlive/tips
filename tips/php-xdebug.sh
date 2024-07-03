@@ -10,20 +10,27 @@ function check_root() {
     fi
 }
 
+function set_php_official_repository() {
+    # 安裝 PHP 官方存儲庫
+    sudo apt install software-properties-common -y
+    sudo add-apt-repository ppa:ondrej/php -y
+    sudo apt update -y
+}
+
 function update_system() {
     apt update -y
     apt upgrade -y
 }
 
 function remove_old_php() {
-    apt-get remove apache2 php php-xdebug -y
+    apt-get remove apache2 php php-fpm php-xdebug -y
     apt-get purge php.* -y
     apt-get autoremove -y
 }
 
 function install_php_n_xdebug() {
     # 安裝新版本 PHP 和 xdebug
-    apt install apache2 php php-xdebug -y
+    apt install apache2 php php-fpm php-xdebug -y
 
     # 檢查 PHP 配置信息
     xdebug_config=$(php -i | grep 'xdebug.ini')
@@ -61,6 +68,7 @@ function main() {
     if check_xdebug; then
         echo "PHP and xdebug already installed."
     else
+        set_php_official_repository
         update_system
         remove_old_php
         install_php_n_xdebug
