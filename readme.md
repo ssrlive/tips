@@ -11,7 +11,7 @@
 - [Rust tips](tips/0005.md)
 - [macOS 命令行下使用 Sublime Text 打开文本文件](tips/0006.md)
 - [VMware 裏安裝的 ubuntu 20.04 不能從 虛擬機 內 複製粘貼出文本 到 host 主機 解決辦法](tips/0008.md)
-- [在 github 上進行任何已存在的兩個提交之間比較](tips/0010.md)
+- [Github tips](tips/0010.md)
 - [浅谈在代理环境中的 DNS 解析行为](tips/0012.md)
 - [Git tips](tips/0015.md)
 - [造字軟件 fontforge 幫字型檔補缺字](tips/0016.md)
