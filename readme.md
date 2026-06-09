@@ -1,5 +1,6 @@
 # Programming tips
 
+- [在 Windows 的 VMWare 虚拟机里安装 macOS Tahoe](tips/0043.md)
 - [Web 開發 tips](tips/0003.md)
 - [wxWidgets tips](tips/0013.md)
 - [TCP 協議 (RFC793) 中文版](tips/0011.md)
