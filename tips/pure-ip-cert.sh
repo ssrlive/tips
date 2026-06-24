@@ -80,56 +80,6 @@ function resolve_hostaddr() {
   hostname -f 2>/dev/null || hostname
 }
 
-# 创建定时任务以自动续期证书
-function create_cron_job_for_renewal() {
-    local hostaddr=$1
-    local cert_dir=$2
-    local cron_script_path=${cert_dir}/renew_cert.sh
-    cat > "$cron_script_path" <<EOL
-#!/usr/bin/env bash
-
-if [ "\$(id -u)" -ne 0 ]; then
-    echo "Error: renew_cert.sh must be run as root." >&2
-    exit 1
-fi
-
-cert_dir="${cert_dir}"
-hostaddr="${hostaddr}"
-acme_path="\${HOME}/.acme.sh/acme.sh"
-if [ ! -x "\$acme_path" ]; then
-    echo "Error: acme.sh not found at \$acme_path." >&2
-    exit 1
-fi
-
-echo "===== Starting certificate renewal process at \$(date). ====="
-
-sudo systemctl stop nginx
-# \${acme_path} --renew-all --force
-if "\${acme_path}" --renew -d "\${hostaddr}" --force; then
-    cd "\${cert_dir}"
-    if [ ! -f "\${hostaddr}.cer" ] || [ ! -f "ca.cer" ]; then
-        echo "Error: Expected certificate files not found after renewal." >&2
-        sudo systemctl start nginx
-        exit 1
-    fi
-    rm -rf fullchain.cer
-    cat "\${hostaddr}.cer" ca.cer > fullchain.cer
-    echo "fullchain.cer has been updated with the renewed certificate and CA chain."
-else
-    echo "Error: Certificate renewal failed for \${hostaddr}." >&2
-fi
-sudo systemctl start nginx
-echo "===== Certificate renewal process completed at \$(date). ====="
-EOL
-    chmod +x "$cron_script_path"
-
-    # 将定时任务添加到 crontab 中, 每2天凌晨 5 点执行一次
-    local cron_job="0 5 */2 * * /usr/bin/env bash ${cron_script_path} >> ${cert_dir}/renewal.log 2>&1"
-    if ! crontab -l 2>/dev/null | grep -F -q "$cron_script_path"; then
-        (crontab -l 2>/dev/null; echo "$cron_job") | crontab
-    fi
-}
-
 function main() {
     install_required_packages
     install_or_update_acme_sh
@@ -168,9 +118,6 @@ function main() {
         --keylength ec-256                  \
         --pre-hook "systemctl stop nginx"   \
         --post-hook "systemctl start nginx" \
-
-    # 创建定时任务以自动续期证书
-    create_cron_job_for_renewal ${hostaddr} ${cert_dir}
 }
 
 main
