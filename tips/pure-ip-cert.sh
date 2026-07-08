@@ -6,8 +6,10 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 function install_required_packages() {
-    sudo apt-get update
-    sudo apt-get install -y curl
+    if ! command -v curl >/dev/null 2>&1; then
+        sudo apt-get update
+        sudo apt-get install -y curl
+    fi
 }
 
 function resolve_acme_sh_path() {
@@ -62,7 +64,14 @@ function install_or_update_acme_sh() {
     fi
 }
 
+# if the first argument is provided, return it as the host address;
+# otherwise, attempt to resolve the host's IP address using external services or fallback to the hostname.
 function resolve_hostaddr() {
+  if [ -n "$1" ]; then
+    printf '%s\n' "$1"
+    return 0
+  fi
+
   local hostaddr
 
   hostaddr=$(curl -4 -sS https://ip.sb 2>/dev/null || true)
@@ -90,7 +99,7 @@ function main() {
         exit 1
     fi
 
-    local hostaddr=$(resolve_hostaddr)
+    local hostaddr=$(resolve_hostaddr "$1")
     if [ -z "$hostaddr" ]; then
         echo "Error: Unable to resolve host IP address."
         exit 1
@@ -107,17 +116,17 @@ function main() {
     share_dir_with_other_user "${cert_dir}" "www-data"
 
     # 使用 acme.sh 以 standalone 模式申请证书（因此必须首先停止 nginx 服务）, 申请的证书默认存储在
-    # ~/.acme.sh/${hostaddr}_ecc 目录下, 申请的证书有效期为 7 天, 因此续订间隔设为 3 天
+    # ~/.acme.sh/${hostaddr}_ecc 目录下, 申请的证书有效期为 7 天, 因此续订间隔设为 5 天
 
     "${acme_sh_path}" --issue --standalone  \
         -d "${hostaddr}"                    \
         --server letsencrypt                \
         --certificate-profile shortlived    \
-        --days 3                            \
+        --days 5                            \
         --force                             \
         --keylength ec-256                  \
         --pre-hook "systemctl stop nginx"   \
         --post-hook "systemctl start nginx" \
 }
 
-main
+main "$@"
