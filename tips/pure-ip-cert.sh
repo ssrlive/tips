@@ -126,7 +126,7 @@ function main() {
         --force                             \
         --keylength ec-256                  \
         --pre-hook "systemctl stop nginx"   \
-        --post-hook "systemctl start nginx" \
+        --post-hook "systemctl start nginx"
 }
 
 main "$@"
